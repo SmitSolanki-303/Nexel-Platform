@@ -45,6 +45,8 @@
   --breakpoint-2xl: 86rem;
   --font-mono: var(--font-geist-mono);
   --font-sans: var(--font-geist-sans);
+  --font-plus-jakarta-sans: var(--font-plus-jakarta-sans);
+  --font-inter: var(--font-inter);
 }
 
 @layer utilities {
@@ -123,6 +125,25 @@
   --success: oklch(78% 0.08 200deg);
   --warning: oklch(89% 0.1 75deg);
   --error: oklch(75% 0.15 25deg);
+
+  /* Jaladhi Modernist Design System Colors - Override existing variables */
+  --color-primary: #e94f37;      /* Fiery Terracotta */
+  --color-secondary: #4d8b31;    /* Forest Green */
+  --color-neutral: #0a0908;      /* Deep Black */
+  --color-surface: #fffaff;      /* Ghost White */
+  --color-accent: #f8f2f0;       /* Warm Sand */
+  
+  /* Typography */
+  --font-plus-jakarta-sans: var(--font-plus-jakarta-sans);
+  --font-inter: var(--font-inter);
+  
+  /* Spacing (Base-8 Scale) */
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 64px;
+  --spacing-2xl: 128px;
 }
 
 [data-theme='dark'] {
@@ -170,14 +191,14 @@
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
+  --color-primary: var(--color-primary);
+  --color-primary-foreground: var(--color-surface);
+  --color-secondary: var(--color-secondary);
+  --color-secondary-foreground: var(--color-surface);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-neutral);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
@@ -203,6 +224,10 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-error: var(--error);
+
+  /* Design System Colors */
+  --color-neutral: var(--color-neutral);
+  --color-surface: var(--color-surface);
 }
 
 @layer base {

@@ -1,60 +1,149 @@
 'use client'
-import { CMSLink } from '@/components/Link'
 import { Cart } from '@/components/Cart'
 import { OpenCartButton } from '@/components/Cart/OpenCart'
 import Link from 'next/link'
-import React, { Suspense } from 'react'
+import { Suspense } from 'react'
 
-import { MobileMenu } from './MobileMenu'
 import type { Header } from 'src/payload-types'
+import { MobileMenu } from './MobileMenu'
 
-import { LogoIcon } from '@/components/icons/logo'
-import { usePathname } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { useAuth } from '@/providers/Auth'
 import { cn } from '@/utilities/cn'
+import { Search, User } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 
 type Props = {
   header: Header
 }
 
 export function HeaderClient({ header }: Props) {
-  const menu = header.navItems || []
+  const { user, logout } = useAuth()
   const pathname = usePathname()
 
+  // Fixed navigation items for Jaladhi Fashion
+  const navigationItems = [
+    { label: 'Home', href: '/' },
+    { label: 'Our Shop', href: '/shop' },
+    { label: 'Our Story', href: '/our-story' },
+  ]
+
   return (
-    <div className="relative z-20 border-b">
-      <nav className="flex items-center md:items-end justify-between container pt-2">
-        <div className="block flex-none md:hidden">
-          <Suspense fallback={null}>
-            <MobileMenu menu={menu} />
-          </Suspense>
-        </div>
-        <div className="flex w-full items-end justify-between">
-          <div className="flex w-full items-end gap-6 md:w-1/3">
-            <Link className="flex w-full items-center justify-center pt-4 pb-4 md:w-auto" href="/">
-              <LogoIcon className="w-6 h-auto" />
-            </Link>
-            {menu.length ? (
-              <ul className="hidden gap-4 text-sm md:flex md:items-center">
-                {menu.map((item) => (
-                  <li key={item.id}>
-                    <CMSLink
-                      {...item.link}
-                      size={'clear'}
-                      className={cn('relative navLink', {
-                        active:
-                          item.link.url && item.link.url !== '/'
-                            ? pathname.includes(item.link.url)
-                            : false,
-                      })}
-                      appearance="nav"
-                    />
-                  </li>
-                ))}
-              </ul>
-            ) : null}
+    <div className="sticky top-0 z-50 backdrop-blur-md bg-surface/90 border-b border-neutral/10">
+      <nav className="max-w-[1440px] mx-auto px-8 py-4">
+        <div className="flex items-center justify-between">
+          {/* Mobile Menu */}
+          <div className="block flex-none md:hidden">
+            <Suspense fallback={null}>
+              <MobileMenu menu={header.navItems || []} />
+            </Suspense>
           </div>
 
-          <div className="flex justify-end md:w-1/3 gap-4">
+          {/* Logo - Left Side */}
+          <div className="flex items-center gap-4">
+            <Link
+              className="text-xl font-bold text-neutral hover:text-primary transition-colors tracking-tight font-plus-jakarta-sans"
+              href="/"
+            >
+              Jaladhi Fashion
+            </Link>
+
+            {/* Center Section - Navigation + Search */}
+            <div className="hidden md:flex items-center flex-1 justify-center space-x-8">
+              {/* Navigation Menu */}
+              <div className="flex items-center space-x-6">
+                {navigationItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      'text-sm font-medium text-neutral hover:text-primary transition-colors tracking-wide font-inter',
+                      {
+                        'text-primary font-semibold': pathname === item.href,
+                      },
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Side - User & Cart Icons */}
+          <div className="flex items-center space-x-3">
+            {/* Search Icon - Mobile/Tablet Only */}
+            <div className="relative hidden md:block">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral/50 h-4 w-4" />
+              <input
+                type="text"
+                placeholder="Search our curated styles..."
+                className="w-80 pl-10 pr-4 py-2 border border-neutral/20 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-surface text-neutral placeholder-neutral/50 font-inter"
+              />
+            </div>
+
+            <Button variant="ghost" size="sm" className="p-2 md:hidden hover:bg-accent">
+              <Search className="h-5 w-5 text-neutral" />
+              <span className="sr-only">Search</span>
+            </Button>
+
+            {/* User Account Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="p-2 hover:bg-accent">
+                  <User className="h-5 w-5 text-neutral" />
+                  <span className="sr-only">User account</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="end"
+                className="w-48 bg-surface border-neutral/20 rounded-lg"
+              >
+                {user ? (
+                  <>
+                    <DropdownMenuItem asChild className="hover:bg-accent">
+                      <Link href="/account" className="text-neutral font-inter">
+                        My Account
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="hover:bg-accent">
+                      <Link href="/orders" className="text-neutral font-inter">
+                        My Orders
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="bg-neutral/10" />
+                    <DropdownMenuItem
+                      onClick={() => logout()}
+                      className="hover:bg-accent text-neutral font-inter"
+                    >
+                      Sign Out
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem asChild className="hover:bg-accent">
+                      <Link href="/login" className="text-neutral font-inter">
+                        Sign In
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="hover:bg-accent">
+                      <Link href="/create-account" className="text-neutral font-inter">
+                        Create Account
+                      </Link>
+                    </DropdownMenuItem>
+                  </>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* Cart */}
             <Suspense fallback={<OpenCartButton />}>
               <Cart />
             </Suspense>

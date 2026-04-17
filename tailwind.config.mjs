@@ -49,8 +49,8 @@ export default {
       },
       colors: {
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: 'var(--color-accent)',
+          foreground: 'var(--color-neutral)',
         },
         background: 'hsl(var(--background))',
         border: 'hsl(var(--border))',
@@ -73,17 +73,21 @@ export default {
           foreground: 'hsl(var(--popover-foreground))',
         },
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          DEFAULT: 'var(--color-primary)',      // #e94f37 - Fiery Terracotta
+          foreground: 'var(--color-surface)',  // #fffaff - Ghost White
         },
         ring: 'hsl(var(--ring))',
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: 'var(--color-secondary)',   // #4d8b31 - Forest Green
+          foreground: 'var(--color-surface)', // #fffaff - Ghost White
         },
         success: 'hsl(var(--success))',
         error: 'hsl(var(--error))',
         warning: 'hsl(var(--warning))',
+        
+        // Design System Colors with simple names
+        'neutral': 'var(--color-neutral)',    // #0a0908 - Deep Black
+        'surface': 'var(--color-surface)',   // #fffaff - Ghost White
       },
       typography: {
         DEFAULT: {
@@ -104,6 +108,8 @@ export default {
       fontFamily: {
         mono: ['var(--font-geist-mono)'],
         sans: ['var(--font-geist-sans)'],
+        'plus-jakarta-sans': ['var(--font-plus-jakarta-sans)'],
+        'inter': ['var(--font-inter)'],
       },
       keyframes: {
         fadeIn: {
